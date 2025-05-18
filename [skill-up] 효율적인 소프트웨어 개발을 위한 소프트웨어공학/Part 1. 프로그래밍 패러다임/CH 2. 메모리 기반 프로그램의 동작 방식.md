@@ -73,4 +73,63 @@ JVM의 위치
 |**OS and Hardware**|-|
 
 # 03. Bytecode란 무엇인가
-> 
+**OnePlusTwo.java**
+```java
+public class OnePlusTwo {
+    public static void main(String[] args) {
+        int a, b, sum; // 변수 선언 -> int(크기:4 Byte, 종류: 정수)
+        a = 1;
+        b = 1;
+        sum = a+b;
+        System.out.println(sum);
+    }
+}
+```
+**OnePlusTwo bytecode**   
+$ javap -c build//classes/java/main/org/example/OnePlusTwo.class 
+
+```java
+Compiled from "OnePlusTwo.java"
+public class OnePlusTwo {
+  public OnePlusTwo();  // 생성자 메서드
+    Code:
+       0: aload_0 // 로컬 변수 스택에 현재 객체(this)를 로드한다.
+       1: invokespecial #1 // Method java/lang/Object. 를 호출한다.
+       4: return  // 생성자가 완료되고 반환된다.
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_1           // push int 1 onto stack
+       1: istore_1           // store into local variable 1 (a)
+       2: iconst_1           // push int 1 onto stack
+       3: istore_2           // store into local variable 2 (b)
+       4: iload_1            // load local variable 1 (a)
+       5: iload_2            // load local variable 2 (b)
+       6: iadd               // add integers
+       7: istore_3           // store result in local variable 3 (sum)
+       8: getstatic     #2   // Field java/lang/System.out:Ljava/io/PrintStream;
+      11: iload_3            // load sum
+      12: invokevirtual #3   // Method java/io/PrintStream.println:(I)V
+      15: return
+}
+
+```
+> 바이트 코드는 어셈블리 언어로 구성되어 있습니다.  
+> 이처럼 자바는 소스코드를 .class 파일로 컴파일할 때 JVM 명령어 집합으로 번역되며, 이 바이트코드는 JVM에서 실행됩니다.
+   
+# 04. JVM을 통한 메모리 이해하기
+> 중간어 코드 = Bytecode = 실행가능한 코드   
+> ___.java -> ___.class  
+> 각 운영체제용 JVM이 ___.java 코드를 __.class 파일로 컴파일해준다.  
+> JIT 는 ___.exe 파일로 바꿔줌
+
+### JVM의 메모리 모델
+|Method area|Stack area|Heap area|Literal Pool area|
+|-----------|-----------|-----------|-----------|
+|Method의 기계어 코드가 로딩|메서드의 호출 상태가 저장 (지역변수, 매개변수가 할당)|객체가 생성되는 메모리 영역|문자열 상수가 저장되는 공간|
+|class meta data가 기록되는 곳|Call stack Frame Area|gc(Garbage Collector) 대상|재활용 메모리 공간|
+|static Zone  none static zone|LIFO구조|new연산자, 생성자 메소드를 사용   동적할당(malloc, free) C언어|-|
+
+
+
+
