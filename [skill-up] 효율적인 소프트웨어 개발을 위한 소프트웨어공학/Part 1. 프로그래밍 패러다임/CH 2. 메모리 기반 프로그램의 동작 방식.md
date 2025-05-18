@@ -130,6 +130,56 @@ public class OnePlusTwo {
 |class meta data가 기록되는 곳|Call stack Frame Area|gc(Garbage Collector) 대상|재활용 메모리 공간|
 |static Zone  none static zone|LIFO구조|new연산자, 생성자 메소드를 사용   동적할당(malloc, free) C언어|-|
 
+# 05. 코드로 알아보는 JVM의 메모리
+```java
+package org.example;
 
+public class Model1 {
+    public static void main(String[] args) {
+        int a, b, sum;
+        a = 1;
+        b = 1;
+        sum = Model1.hap(a, b); // static 이므로 즉시 호출
+        System.out.println(sum);
+    }
+    public static int hap(int a, int b){
+        int sum = a + b;
+        return sum;
+    }
+}
+```
+![alt text](image-1.png)
 
+# 06. 코드로 알아보는 JVM의 메모리
 
+클래스 메서드
+> static이 붙어있는 클래스로써, 클래스 이름으로 접근 가능   
+
+인스턴스 메서드
+> none static 클래스
+```java
+package org.example;
+
+public class Model2 {
+    // 멤버변수는 new를 통해 객체가 생성될 때 메모리에 올라감.
+    
+    // 디폴트 생성자 메서드 (객체의 초기화를 담당하는 역할)
+    public Model2(){
+    }
+    public static void main(String[] args) {
+        int a, b, sum;
+        a = 1;
+        b = 1;
+        // 객체를 생성 Method Area의 metadata를 Heap Area에 로드드
+        Model2 m2 = new Model2();
+        sum = m2.hap(a, b);
+        System.out.println(sum);
+    }
+
+    public int hap(int a, int b){
+        int sum = a + b;
+        return sum;
+    }
+}
+```
+![alt text](image-2.png)
